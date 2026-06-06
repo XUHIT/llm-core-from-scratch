@@ -16,3 +16,11 @@ xxx_algorithm_name/
 - `torch_impl.py`: PyTorch 对照实现，用于数值验证、autograd 对照和后续组合。
 
 第一阶段只使用小数字样例和 synthetic tensors，不使用真实数据集。
+
+## 当前骨架
+
+- `p0_fundamentals/001-013`: shape、矩阵乘法、线性回归、K-means、线性层、Embedding、激活函数、Softmax、CE、KL、MSE、BatchNorm、Dropout。
+- `p1_llm_core/014-024`: LayerNorm、RMSNorm、causal mask、attention、MHA、GQA、RoPE、FFN、SwiGLU、LM Head、ALiBi。
+- `p2_inference_training/025-035`: KV cache、decoder block、Tiny GPT、采样、AdamW、梯度裁剪、SFT loss、beam search、梯度累积。
+
+LoRA、QLoRA、DPO、GRPO、PPO、MoE、MTP 等先保留在路线图中，后续进入第二阶段再建实现骨架。

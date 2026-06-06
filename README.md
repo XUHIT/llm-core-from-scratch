@@ -70,18 +70,52 @@ LLM 核心层采用 NumPy reference 和 PyTorch module 并重。
 
 ## 目录
 
-```
+```text
 algorithms/
-├── p0_fundamentals/            # 基础组件
-│   ├── 001_linear_layer/
-│   │   ├── README.md           # 公式、shape、手推、常见坑
-│   │   ├── numpy_impl.py       # NumPy 手写主实现
-│   │   └── torch_impl.py       # PyTorch 对照实现
-│   └── ...
-├── p1_llm_core/                # LLM 核心层
-│   └── ...
-└── p2_inference_training/      # 推理、训练目标与模型闭环
-    └── ...
+├── README.md
+├── p0_fundamentals/            # 001-013 基础组件
+│   ├── 001_tensor_shape/
+│   ├── 002_matrix_multiplication/
+│   ├── 003_linear_regression/
+│   ├── 004_k_means/
+│   ├── 005_linear_layer/
+│   ├── 006_embedding/
+│   ├── 007_activations/
+│   ├── 008_softmax/
+│   ├── 009_cross_entropy/
+│   ├── 010_kl_divergence/
+│   ├── 011_mse_loss/
+│   ├── 012_batchnorm/
+│   └── 013_dropout/
+├── p1_llm_core/                # 014-024 LLM 核心层
+│   ├── 014_layernorm/
+│   ├── 015_rmsnorm/
+│   ├── 016_causal_mask/
+│   ├── 017_scaled_dot_product_attention/
+│   ├── 018_multi_head_attention/
+│   ├── 019_grouped_query_attention/
+│   ├── 020_rope/
+│   ├── 021_ffn_mlp/
+│   ├── 022_swiglu_ffn/
+│   ├── 023_lm_head_weight_tying/
+│   └── 024_alibi/
+└── p2_inference_training/      # 025-035 推理、训练目标与模型闭环
+    ├── 025_kv_cache/
+    ├── 026_decoder_block/
+    ├── 027_tiny_gpt_forward/
+    ├── 028_greedy_temperature_sampling/
+    ├── 029_top_k_sampling/
+    ├── 030_top_p_sampling/
+    ├── 031_adamw/
+    ├── 032_gradient_clipping/
+    ├── 033_sft_loss/
+    ├── 034_beam_search/
+    └── 035_gradient_accumulation/
+
+每道题文件夹默认包含：
+README.md      # 公式、shape、手推、常见坑
+numpy_impl.py  # NumPy 手写实现
+torch_impl.py  # PyTorch 对照实现
 
 docs/
 └── interview_scratch_foundations.md   # 完整题库与路线图
