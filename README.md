@@ -1,14 +1,72 @@
 # llm-core-from-scratch
 
-PyTorch 实现的大语言模型核心模块（NumPy 版本后补）。
+面向面试手撕和底层机制理解的大语言模型核心模块实现。
 
-目标：逐模块手写 LLM 关键组件，每个模块配知识点讲解和代码解析。
+目标：逐模块手写 LLM 关键组件，每个模块配知识点讲解、shape 变化、代码解析和数值验证。
 
 ## 实现原则
 
-**先用 PyTorch 跑通、验证、理解，再考虑用 NumPy 复刻底层细节。**
+这个项目按题库层级选择实现方式，不是一律 PyTorch 先行。
 
-原因：NumPy 偏底层，需要手动写反向传播；PyTorch 能快速验证正确性、观察梯度、上 GPU 实验。等 PyTorch 版本稳定后，再补 NumPy 版本加深理解。
+### P0：NumPy first
+
+基础手撕题优先用 NumPy 实现。
+
+适用范围：
+
+- Linear regression
+- K-means
+- Linear layer
+- Embedding
+- Softmax / Cross Entropy / KL / MSE
+- BatchNorm / Dropout
+
+原因：P0 的目标是看清楚每一步真实计算、shape 变化、broadcasting、forward/backward 推导。PyTorch 在这一层主要作为 reference checker，用来做 `allclose`、autograd 或 gradcheck 对照。
+
+### P1：NumPy reference + PyTorch module
+
+LLM 核心层采用 NumPy reference 和 PyTorch module 并重。
+
+适用范围：
+
+- LayerNorm / RMSNorm
+- Causal mask
+- Scaled dot-product attention
+- MHA / GQA
+- RoPE / ALiBi
+- FFN / SwiGLU
+- LM Head / Weight Tying
+
+原因：NumPy 负责解释公式、维度和中间张量；PyTorch 负责模块化、梯度验证和后续组合成模型。
+
+### P2：PyTorch first
+
+推理、训练目标和最小模型闭环优先用 PyTorch 实现。
+
+适用范围：
+
+- KV Cache
+- Decoder Block
+- Tiny GPT forward
+- Greedy / Top-k / Top-p / Beam Search
+- AdamW / Gradient Clipping / Gradient Accumulation
+- SFT / DPO / PPO / GRPO 等 loss
+
+原因：P2 更接近模块组合和训练/推理流程，PyTorch 更适合验证工程行为。必要时再补 NumPy reference，帮助解释关键子步骤。
+
+## 验证原则
+
+第一阶段不使用真实数据集，不追求训练效果。
+
+所有正确性验证优先使用：
+
+- 小数字可读样例
+- synthetic tensors
+- 固定 random seed
+- shape assertions
+- NumPy / PyTorch 数值对齐
+
+真实数据训练放到后续实验阶段。
 
 ## 目录
 
