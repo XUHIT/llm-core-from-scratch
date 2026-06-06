@@ -1,0 +1,24 @@
+.DS_Store
+.env
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+
+# Large or machine-local experiment artifacts
+data/
+datasets/
+checkpoints/
+wandb/
+.cache/
+runs/tmp/
+outputs/tmp/
+*.ckpt
+*.pt
+*.pth
+*.safetensors
+
+# Editor and notebook checkpoints
+.vscode/
+.idea/
+.ipynb_checkpoints/
