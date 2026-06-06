@@ -19,8 +19,17 @@ Xavier uniform: $W \sim U\left(-\sqrt{1/d_{in}},\ \sqrt{1/d_{in}}\right)$
 
 ## 代码解析
 
-- `nn.Linear` 内部存储 $W^T$，forward 做 $xW^T + b$
+- NumPy 主实现使用 $W \in \mathbb{R}^{d_{in} \times d_{out}}$，forward 做 `x @ W + b`
+- `nn.Linear` 内部存储的是 $W^T$，PyTorch forward 做 `x @ weight.T + bias`
 - 输入 `[B, T, D]` 时线性层自动作用在最后一维
+
+## 文件
+
+```text
+README.md
+numpy_impl.py
+torch_impl.py
+```
 
 ## 延伸
 

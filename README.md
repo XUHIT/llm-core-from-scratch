@@ -71,16 +71,16 @@ LLM 核心层采用 NumPy reference 和 PyTorch module 并重。
 ## 目录
 
 ```
-src/llm_core_from_scratch/
-├── common/                     # 共享工具
+algorithms/
 ├── p0_fundamentals/            # 基础组件
 │   ├── 001_linear_layer/
-│   │   ├── torch_impl.py       # PyTorch 实现
-│   │   └── README.md           # 知识点 + 代码解析 + 延伸
+│   │   ├── README.md           # 公式、shape、手推、常见坑
+│   │   ├── numpy_impl.py       # NumPy 手写主实现
+│   │   └── torch_impl.py       # PyTorch 对照实现
 │   └── ...
 ├── p1_llm_core/                # LLM 核心层
 │   └── ...
-└── p2_inference/               # 推理与模型闭环
+└── p2_inference_training/      # 推理、训练目标与模型闭环
     └── ...
 
 docs/
