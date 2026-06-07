@@ -1,6 +1,6 @@
 # Scratchpad Template
 
-这是本地草稿区模板。
+这是本地草稿区模板。默认示例使用 PyTorch。
 
 复制到 `scratchpad/` 后使用：
 
@@ -22,7 +22,7 @@ check.py      # 快速运行 current/reference
 
 练习时优先在 `current.py` 里写：
 
-- 小数字输入。
+- 小数字 PyTorch Tensor 输入。
 - shape 打印。
 - 自己手写的函数。
 - assert 检查。

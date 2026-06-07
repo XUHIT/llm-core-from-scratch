@@ -4,7 +4,7 @@
     python scratchpad/check.py
 
 它会运行 current.py 和 reference.py 里的 main()。
-如果两个 main() 都返回了结果，会尽量做数值对齐检查。
+如果两个 main() 都返回了结果，会优先用 torch.allclose 做数值对齐检查，再退回 NumPy。
 """
 
 from __future__ import annotations
@@ -54,6 +54,14 @@ def try_allclose(actual: Any, expected: Any) -> bool | None:
         False: 可以比较，但结果不接近
         None: 当前返回值类型不适合自动比较
     """
+    try:
+        import torch
+
+        if isinstance(actual, torch.Tensor) and isinstance(expected, torch.Tensor):
+            return bool(torch.allclose(actual, expected, atol=1e-8, rtol=1e-6))
+    except ModuleNotFoundError:
+        pass
+
     try:
         import numpy as np
     except ModuleNotFoundError:

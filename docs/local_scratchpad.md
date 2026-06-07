@@ -1,8 +1,8 @@
 # 本地草稿区
 
-这个项目会把正式答案放在 `algorithms/` 下，每道题都有 `README.md`、`numpy_impl.py` 和 `torch_impl.py`。
+这个项目会把正式答案放在 `algorithms/` 下，每道题都有 `README.md`、`torch_impl.py` 和 `numpy_impl.py`。
 
-但练习时需要一个更随意的地方：先自己手敲，马上运行，看 shape 和数值是否正确。这个地方就是：
+但练习时需要一个更随意的地方：先自己手敲 PyTorch 版本，马上运行，看 shape 和数值是否正确。这个地方就是：
 
 ```text
 scratchpad/
@@ -72,7 +72,7 @@ def main():
 对照版本可以来自：
 
 - 你自己第二次重写的版本。
-- NumPy 和 PyTorch 的互相验证版本。
+- PyTorch 主实现与 NumPy 辅助版本的互相验证。
 - `algorithms/` 里已经整理好的正式实现。
 
 ## check.py 做什么

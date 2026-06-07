@@ -8,12 +8,12 @@
 
 每个题目默认包含：
 
-- NumPy reference implementation
-- PyTorch implementation
+- PyTorch primary implementation
 - 小数字可读样例
 - 随机 synthetic tensor 数值对齐
 - shape 检查
-- 必要时 backward / gradcheck
+- 必要时 backward / autograd / gradcheck 对照
+- NumPy reference implementation（辅助公式展开和数值对齐，不作为第一优先级）
 - 常见错误说明
 
 ## P0：必须先做的基础
@@ -115,7 +115,7 @@ D = 2
 K = 2 clusters
 ```
 
-第一版只做 NumPy 向量化实现和 PyTorch 对照，不依赖真实数据。
+第一版优先做 PyTorch 向量化实现；必要时补 NumPy reference 做公式展开和数值对齐，不依赖真实数据。
 
 ### Top-k / top-p sampling
 

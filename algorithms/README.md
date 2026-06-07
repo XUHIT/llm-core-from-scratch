@@ -7,15 +7,15 @@
 ```text
 xxx_algorithm_name/
 ├── README.md
-├── numpy_impl.py
-└── torch_impl.py
+├── torch_impl.py
+└── numpy_impl.py
 ```
 
 - `README.md`: 公式、shape 变化、手推重点、常见坑。
-- `numpy_impl.py`: NumPy 手写实现。P0 基础题以它为主。
-- `torch_impl.py`: PyTorch 对照实现，用于数值验证、autograd 对照和后续组合。
+- `torch_impl.py`: PyTorch 主实现。每题先保证它可运行、可读、可验证。
+- `numpy_impl.py`: NumPy 辅助对照。用于解释公式、展开小数字计算或做双实现数值对齐。
 
-第一阶段只使用小数字样例和 synthetic tensors，不使用真实数据集。
+第一阶段只使用小数字样例和 synthetic tensors，不使用真实数据集。所有题目默认 PyTorch first。
 
 ## 当前骨架
 

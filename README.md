@@ -6,26 +6,33 @@
 
 ## 实现原则
 
-这个项目按题库层级选择实现方式，不是一律 PyTorch 先行。
+这个项目统一采用 **PyTorch first**。
 
-### P0：NumPy first
+所有题目都先保证 `torch_impl.py` 可运行、可读、可验证。`numpy_impl.py` 保留，但它的定位是辅助理解、公式展开和数值对照，不再作为第一优先级。
 
-基础手撕题优先用 NumPy 实现。
+### 全部题目：PyTorch first
 
-适用范围：
+默认交付顺序：
 
-- Linear regression
-- K-means
-- Linear layer
-- Embedding
-- Softmax / Cross Entropy / KL / MSE
-- BatchNorm / Dropout
+1. 先写 `torch_impl.py`，跑通小数字样例和 shape 检查。
+2. 再按需要补 `numpy_impl.py`，用于解释公式、手推细节或和 PyTorch 做 `allclose` 对齐。
+3. 最后整理 `README.md`，说明公式、shape 变化、常见坑和验证方式。
 
-原因：P0 的目标是看清楚每一步真实计算、shape 变化、broadcasting、forward/backward 推导。PyTorch 在这一层主要作为 reference checker，用来做 `allclose`、autograd 或 gradcheck 对照。
+### P0：PyTorch 手写张量计算
 
-### P1：NumPy reference + PyTorch module
+基础题也优先 PyTorch，但不能直接用高级封装把问题遮住。
 
-LLM 核心层采用 NumPy reference 和 PyTorch module 并重。
+例如：
+
+- 线性层可以用 `x @ weight + bias`，但不要一上来只调用 `torch.nn.Linear`。
+- Cross Entropy 要先写清楚 logits、softmax/log-softmax、label shift 和 mask，再和 `torch.nn.functional.cross_entropy` 对照。
+- BatchNorm / LayerNorm 要写出均值、方差、归一化和 affine，再和 PyTorch 官方实现对照。
+
+P0 的目标仍然是看清楚真实计算、shape 变化、broadcasting 和 backward 推导；只是承载这些计算的主工具改为 PyTorch。
+
+### P1：PyTorch module + 公式展开
+
+LLM 核心层优先写 PyTorch 模块化实现，同时在代码注释和 README 里展开关键公式。
 
 适用范围：
 
@@ -37,11 +44,9 @@ LLM 核心层采用 NumPy reference 和 PyTorch module 并重。
 - FFN / SwiGLU
 - LM Head / Weight Tying
 
-原因：NumPy 负责解释公式、维度和中间张量；PyTorch 负责模块化、梯度验证和后续组合成模型。
+### P2：PyTorch 训练与推理闭环
 
-### P2：PyTorch first
-
-推理、训练目标和最小模型闭环优先用 PyTorch 实现。
+推理、训练目标和最小模型闭环继续 PyTorch first。
 
 适用范围：
 
@@ -52,7 +57,19 @@ LLM 核心层采用 NumPy reference 和 PyTorch module 并重。
 - AdamW / Gradient Clipping / Gradient Accumulation
 - SFT / DPO / PPO / GRPO 等 loss
 
-原因：P2 更接近模块组合和训练/推理流程，PyTorch 更适合验证工程行为。必要时再补 NumPy reference，帮助解释关键子步骤。
+原因：P2 更接近模块组合和训练/推理流程，PyTorch 更适合验证工程行为。
+
+### NumPy 的角色
+
+NumPy 不再是主实现优先级。
+
+保留 `numpy_impl.py` 的原因是：
+
+- 对非常基础的公式做更透明的数值展开。
+- 和 PyTorch 做双实现数值对齐。
+- 帮助面试时解释“这个张量到底怎么算出来”。
+
+时间有限时，先完成 PyTorch 版本。
 
 ## 验证原则
 
@@ -122,8 +139,8 @@ algorithms/
 
 每道题文件夹默认包含：
 README.md      # 公式、shape、手推、常见坑
-numpy_impl.py  # NumPy 手写实现
-torch_impl.py  # PyTorch 对照实现
+torch_impl.py  # PyTorch 主实现
+numpy_impl.py  # NumPy 辅助对照
 
 docs/
 └── interview_scratch_foundations.md   # 完整题库与路线图
