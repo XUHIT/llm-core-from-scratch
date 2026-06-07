@@ -68,6 +68,14 @@ LLM 核心层采用 NumPy reference 和 PyTorch module 并重。
 
 真实数据训练放到后续实验阶段。
 
+## 本地草稿区
+
+需要自己手敲代码和快速验证时，使用 `scratchpad/`。
+
+`scratchpad/` 是本地练习区，已经被 `.gitignore` 忽略，不会提交到公开仓库。公开仓库只保留 `templates/scratchpad/` 作为模板；真正练习时把模板复制到 `scratchpad/`，然后在 `current.py` 里手写实现，在 `reference.py` 里放对照版本，用 `check.py` 快速运行。
+
+详细说明见 `docs/local_scratchpad.md`。
+
 ## 目录
 
 ```text

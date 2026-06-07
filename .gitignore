@@ -6,6 +6,9 @@ __pycache__/
 *.py[cod]
 *.egg-info/
 
+# Local hand-written scratchpad, never committed
+/scratchpad/
+
 # Large or machine-local experiment artifacts
 data/
 datasets/
