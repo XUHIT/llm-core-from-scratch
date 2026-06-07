@@ -122,6 +122,8 @@ x = [0, 1, 2, ..., 23]
 x.shape = [24]
 ```
 
+默认是整数；写 `dtype=torch.float32/float64` 时生成浮点数。
+
 ```python
 x = torch.arange(B * T * D, dtype=torch.float64)
 x = x.reshape(B, T, D)
