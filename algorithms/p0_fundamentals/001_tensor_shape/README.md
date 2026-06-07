@@ -111,9 +111,7 @@ x.reshape(...)
 
 ### `torch.arange`
 
-`arange` 可以理解成 array range，也就是“生成一段连续数字的张量”。
-
-它很像 Python 自带的 `range`，但返回的是 PyTorch Tensor。
+生成连续数字张量，像 Python 的 `range`，但返回 Tensor。
 
 ```python
 x = torch.arange(24, dtype=torch.float64)
@@ -124,30 +122,12 @@ x = [0, 1, 2, ..., 23]
 x.shape = [24]
 ```
 
-常见写法：
-
-```python
-torch.arange(end)
-torch.arange(start, end)
-torch.arange(start, end, step)
-```
-
-例子：
-
-```python
-torch.arange(5)        # [0, 1, 2, 3, 4]
-torch.arange(2, 6)     # [2, 3, 4, 5]
-torch.arange(0, 10, 2) # [0, 2, 4, 6, 8]
-```
-
-本题用它不是为了生成真实数据，而是为了构造容易观察的小数字张量：
-
 ```python
 x = torch.arange(B * T * D, dtype=torch.float64)
 x = x.reshape(B, T, D)
 ```
 
-这样 reshape、transpose、split heads 之后，元素顺序是否正确一眼能看出来。
+本题用它造小数字，方便检查 reshape / transpose 后元素顺序。
 
 ### `reshape`
 
@@ -179,24 +159,18 @@ x_2d = x.reshape(B * T, D)
 x = x.transpose(1, 2)
 ```
 
-如果 `x.shape = [B, T, H, Dh]`，那么：
-
 ```text
 [B, T, H, Dh] -> [B, H, T, Dh]
 ```
 
-拆 attention heads 时会用到它。
-
 ### `contiguous`
 
-`transpose` 后张量的内存通常不连续。想继续用 `view` 合并维度时，先调用：
+`transpose` 后张量内存通常不连续，接 `view` 前先用它。
 
 ```python
 x = x.transpose(1, 2).contiguous()
 x = x.view(B, T, H * Dh)
 ```
-
-本题里合并 heads 的路径是：
 
 ```text
 [B, H, T, Dh] -> [B, T, H, Dh] -> [B, T, D]
@@ -204,7 +178,7 @@ x = x.view(B, T, H * Dh)
 
 ### Broadcasting
 
-PyTorch 会从右往左对齐维度，自动扩展长度为 1 或缺失的维度。
+PyTorch 从右往左对齐维度，自动扩展缺失维度。
 
 ```python
 y = x + bias
@@ -215,8 +189,6 @@ x.shape    = [B, T, D]
 bias.shape = [D]
 y.shape    = [B, T, D]
 ```
-
-位置编码也是一样：
 
 ```python
 y = x + pos_emb
@@ -240,7 +212,7 @@ mask = torch.triu(torch.ones(T, T, dtype=torch.bool), diagonal=1)
 mask.shape = [T, T]
 ```
 
-`diagonal=1` 表示主对角线不 mask，只 mask 未来位置。
+`diagonal=1`：主对角线保留，只 mask 未来位置。
 
 ### `masked_fill`
 
@@ -256,13 +228,9 @@ mask.shape   = [T, T]
 输出 shape   = [B, H, T, T]
 ```
 
-这里的 `mask[None, None, :, :]` 是手动补两个维度：
-
 ```text
 [T, T] -> [1, 1, T, T]
 ```
-
-然后广播到 `[B, H, T, T]`。
 
 ## 文件
 
