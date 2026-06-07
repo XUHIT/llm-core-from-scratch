@@ -111,15 +111,43 @@ x.reshape(...)
 
 ### `torch.arange`
 
-生成连续数字，经常用来构造小张量，方便观察 reshape 后元素顺序有没有乱。
+`arange` 可以理解成 array range，也就是“生成一段连续数字的张量”。
+
+它很像 Python 自带的 `range`，但返回的是 PyTorch Tensor。
 
 ```python
 x = torch.arange(24, dtype=torch.float64)
 ```
 
 ```text
+x = [0, 1, 2, ..., 23]
 x.shape = [24]
 ```
+
+常见写法：
+
+```python
+torch.arange(end)
+torch.arange(start, end)
+torch.arange(start, end, step)
+```
+
+例子：
+
+```python
+torch.arange(5)        # [0, 1, 2, 3, 4]
+torch.arange(2, 6)     # [2, 3, 4, 5]
+torch.arange(0, 10, 2) # [0, 2, 4, 6, 8]
+```
+
+本题用它不是为了生成真实数据，而是为了构造容易观察的小数字张量：
+
+```python
+x = torch.arange(B * T * D, dtype=torch.float64)
+x = x.reshape(B, T, D)
+```
+
+这样 reshape、transpose、split heads 之后，元素顺序是否正确一眼能看出来。
 
 ### `reshape`
 
