@@ -232,6 +232,17 @@ mask.shape   = [T, T]
 [T, T] -> [1, 1, T, T]
 ```
 
+### `assert`
+
+检查条件是否成立；不成立就报错并停止。
+
+```python
+assert x.shape == (B, T, D)
+assert torch.equal(merged, x)
+```
+
+用于快速确认 shape 和元素顺序没错。
+
 ## 文件
 
 ```text
