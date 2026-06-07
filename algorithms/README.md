@@ -17,6 +17,23 @@ xxx_algorithm_name/
 
 第一阶段只使用小数字样例和 synthetic tensors，不使用真实数据集。所有题目默认 PyTorch first。
 
+## 函数用法速记
+
+用户随时问到的基础函数用法，要补到对应题目的 `README.md` 里。
+
+推荐小节名：
+
+```text
+## 函数用法速记
+```
+
+记录原则：
+
+- 只记和当前题目直接相关的函数。
+- 优先写 PyTorch 用法，必要时补 NumPy 对照。
+- 每个函数说明三件事：它干嘛、最常用写法、输入输出 shape。
+- 不写成长篇文档，保持能手敲和面试复习时快速扫读。
+
 ## 当前骨架
 
 - `p0_fundamentals/001-013`: shape、矩阵乘法、线性回归、K-means、线性层、Embedding、激活函数、Softmax、CE、KL、MSE、BatchNorm、Dropout。

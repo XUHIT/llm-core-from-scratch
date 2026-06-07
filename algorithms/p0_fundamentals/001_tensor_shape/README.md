@@ -107,12 +107,141 @@ x.reshape(...)
 
 本题 PyTorch 版本会显式使用 `contiguous().view(...)`，方便理解底层内存布局问题。
 
+## 函数用法速记
+
+### `torch.arange`
+
+生成连续数字，经常用来构造小张量，方便观察 reshape 后元素顺序有没有乱。
+
+```python
+x = torch.arange(24, dtype=torch.float64)
+```
+
+```text
+x.shape = [24]
+```
+
+### `reshape`
+
+改变张量形状，但元素总数必须不变。
+
+```python
+x = x.reshape(2, 3, 4)
+```
+
+```text
+[24] -> [2, 3, 4]
+```
+
+在本题里最常见的是：
+
+```python
+x_2d = x.reshape(B * T, D)
+```
+
+```text
+[B, T, D] -> [B*T, D]
+```
+
+### `transpose`
+
+交换两个维度的位置。
+
+```python
+x = x.transpose(1, 2)
+```
+
+如果 `x.shape = [B, T, H, Dh]`，那么：
+
+```text
+[B, T, H, Dh] -> [B, H, T, Dh]
+```
+
+拆 attention heads 时会用到它。
+
+### `contiguous`
+
+`transpose` 后张量的内存通常不连续。想继续用 `view` 合并维度时，先调用：
+
+```python
+x = x.transpose(1, 2).contiguous()
+x = x.view(B, T, H * Dh)
+```
+
+本题里合并 heads 的路径是：
+
+```text
+[B, H, T, Dh] -> [B, T, H, Dh] -> [B, T, D]
+```
+
+### Broadcasting
+
+PyTorch 会从右往左对齐维度，自动扩展长度为 1 或缺失的维度。
+
+```python
+y = x + bias
+```
+
+```text
+x.shape    = [B, T, D]
+bias.shape = [D]
+y.shape    = [B, T, D]
+```
+
+位置编码也是一样：
+
+```python
+y = x + pos_emb
+```
+
+```text
+x.shape       = [B, T, D]
+pos_emb.shape = [T, D]
+y.shape       = [B, T, D]
+```
+
+### `torch.triu`
+
+取上三角，常用来构造 causal mask。
+
+```python
+mask = torch.triu(torch.ones(T, T, dtype=torch.bool), diagonal=1)
+```
+
+```text
+mask.shape = [T, T]
+```
+
+`diagonal=1` 表示主对角线不 mask，只 mask 未来位置。
+
+### `masked_fill`
+
+把 mask 为 `True` 的位置替换成指定值。
+
+```python
+masked_scores = scores.masked_fill(mask[None, None, :, :], -1e9)
+```
+
+```text
+scores.shape = [B, H, T, T]
+mask.shape   = [T, T]
+输出 shape   = [B, H, T, T]
+```
+
+这里的 `mask[None, None, :, :]` 是手动补两个维度：
+
+```text
+[T, T] -> [1, 1, T, T]
+```
+
+然后广播到 `[B, H, T, T]`。
+
 ## 文件
 
 ```text
 README.md       # shape 说明
-numpy_impl.py   # NumPy 维度变化与广播
 torch_impl.py   # PyTorch 维度变化与广播
+numpy_impl.py   # NumPy 辅助对照
 ```
 
 ## 运行
